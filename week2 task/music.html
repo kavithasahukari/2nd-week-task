@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Music Player</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .active-link {
+            font-weight: bold;
+            color: #1D4ED8;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-white shadow fixed w-full z-10 top-0">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600">Musicify</h1>
+            <ul class="flex space-x-6">
+                <li><a href="#player" class="hover:text-blue-600">Player</a></li>
+                <li><a href="#playlist" class="hover:text-blue-600">Playlist</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="mt-16">
+        <!-- Section 1: Music Player -->
+        <section id="player" class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold mb-4">Music Player</h2>
+            <div class="bg-white shadow rounded-lg p-6 flex flex-col md:flex-row items-center justify-between">
+                <div class="w-full md:w-1/2">
+                    <h3 class="text-xl font-semibold">Now Playing:</h3>
+                    <p class="text-gray-600" id="current-song">No Song Selected</p>
+                </div>
+                <div class="flex space-x-4 items-center mt-4 md:mt-0">
+                    <button id="play-pause" class="bg-blue-600 text-white px-4 py-2 rounded">Play</button>
+                    <button id="next" class="bg-gray-200 px-4 py-2 rounded">Next</button>
+                    <button id="previous" class="bg-gray-200 px-4 py-2 rounded">Previous</button>
+                </div>
+                <div class="w-full md:w-1/4 mt-4 md:mt-0">
+                    <input id="volume" type="range" min="0" max="100" class="w-full">
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Playlist -->
+        <section id="playlist" class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold mb-4">Playlist</h2>
+            <ul id="playlist-container" class="bg-white shadow rounded-lg p-4">
+                <li class="p-2 hover:bg-gray-100 cursor-pointer">Song 1</li>
+                <li class="p-2 hover:bg-gray-100 cursor-pointer">Song 2</li>
+                <li class="p-2 hover:bg-gray-100 cursor-pointer">Song 3</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 text-center py-4 mt-4">
+        <p>&copy; 2025 Musicify. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        const playPauseButton = document.getElementById('play-pause');
+        const currentSongElement = document.getElementById('current-song');
+        const volumeControl = document.getElementById('volume');
+        const playlistContainer = document.getElementById('playlist-container');
+
+        let isPlaying = false;
+        let currentSongIndex = -1;
+        const songs = ['Song 1', 'Song 2', 'Song 3'];
+
+        playPauseButton.addEventListener('click', () => {
+            if (currentSongIndex === -1 && songs.length > 0) {
+                currentSongIndex = 0;
+                currentSongElement.textContent = songs[currentSongIndex];
+            }
+
+            isPlaying = !isPlaying;
+            playPauseButton.textContent = isPlaying ? 'Pause' : 'Play';
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            if (songs.length > 0) {
+                currentSongIndex = (currentSongIndex + 1) % songs.length;
+                currentSongElement.textContent = songs[currentSongIndex];
+                isPlaying = true;
+                playPauseButton.textContent = 'Pause';
+            }
+        });
+
+        document.getElementById('previous').addEventListener('click', () => {
+            if (songs.length > 0) {
+                currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                currentSongElement.textContent = songs[currentSongIndex];
+                isPlaying = true;
+                playPauseButton.textContent = 'Pause';
+            }
+        });
+
+        volumeControl.addEventListener('input', (event) => {
+            console.log(Volume: ${event.target.value});
+        });
+
+        playlistContainer.addEventListener('click', (event) => {
+            if (event.target.tagName === 'LI') {
+                currentSongIndex = songs.indexOf(event.target.textContent);
+                currentSongElement.textContent = event.target.textContent;
+                isPlaying = true;
+                playPauseButton.textContent = 'Pause';
+            }
+        });
+    </script>
+</body>
+</html>
